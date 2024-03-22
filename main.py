@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from bound_buyer_file_converter import convert_buyer
 from bound_user_file_converter import convert_user
 
@@ -22,7 +23,12 @@ def converter(buyer_output, user_output):
     except Exception as e:
         print("Some error Occured")
 
+def create_folder_if_not(folder_name):
+    # Define the folder path
 
+    # Create the folder if it doesn't exist
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
 
 
 def build_markdown():
@@ -32,25 +38,33 @@ def build_markdown():
     # Extract the year from the relevant date column
     merged_df['Year'] = pd.to_datetime(merged_df['Date of Purchase']).dt.year
     merged_df['Denominations_x'] = merged_df['Denominations_x'].str.replace(',', '').astype(float)
-
-    # Group by year and buyer, summing up the bond amounts
     grouped_df = merged_df.groupby(['Year', 'Name of the Purchaser']).agg({'Denominations_x': 'sum'}).reset_index()
+    grouped_df.rename(columns={'Denominations_x': 'Total Amount of Bond Bought'}, inplace=True)
+    grouped_df['Total Amount of Bond Bought'] = grouped_df['Total Amount of Bond Bought'].apply(lambda x: '{:.2f}'.format(x))
+    
+    folder_name = "content"
+    create_folder_if_not(folder_name)
 
-    # Rename the columns for clarity
-    grouped_df.rename(columns={'Denominations_x': 'Total Amount'}, inplace=True)
+    # Write the table to a Markdown file in the content folder
+    markdown_file_path = os.path.join(folder_name, 'most_frequent_purchaser.md')
+    grouped_df.to_html(markdown_file_path, index=False)
         
     # # Table 2: Mean Purchaser Amount by Year, Sorted Descendingly
-    # merged_df["Encashment"] = pd.to_datetime(merged_df["Date Of Encashment"]).dt.year
-    # merged_df['Denominations_y'] = merged_df['Denominations_y'].str.replace(',', '').astype(float)
-    # mean_purchaser_amount = merged_df.groupby(['Encashment', 'Name of Political party'])['Denominations_y'].mean().reset_index()
-    # # mean_purchaser_amount = mean_purchaser_amount.sort_values(by=['Date Of Encashment', 'Denominations_y'], ascending=[True, False])
-    # most_frequent_purchaser = most_frequent_purchaser.sort_values(by=['Encashment', 'Denominations_y'], ascending=[True, False])
-    # most_frequent_purchaser = most_frequent_purchaser.groupby('Date of Purchase').first().reset_index()[['Date of Purchase', 'Name of Political party']]
+    # Extract the year from the relevant date column
+    merged_df['Year'] = pd.to_datetime(merged_df['Date Of Encashment']).dt.year
+    merged_df['Denominations_y'] = merged_df['Denominations_y'].str.replace(',', '').astype(float)
+    grouped_df = merged_df.groupby(['Year', 'Name of Political party']).agg({'Denominations_y': 'sum'}).reset_index()
+    grouped_df.rename(columns={'Denominations_y': 'Total amount of bond encahsed'}, inplace=True)
+    grouped_df['Total amount of bond encahsed'] = grouped_df['Total amount of bond encahsed'].apply(lambda x: '{:.2f}'.format(x))
+    
+    
+    # Write the table to a Markdown file in the content folder
+    markdown_file_path = os.path.join(folder_name, 'most_frequent_encashment.md')
+    grouped_df.to_html(markdown_file_path, index=False)
 
-    # Write tables to separate Markdown files
-    # most_frequent_purchaser.to_markdown('most_frequent_purchaser.md', index=False)
-    grouped_df.to_markdown('most_frequent_purchaser.md', index=False)
-    # mean_purchaser_amount.to_markdown('mean_purchaser_amount.md', index=False)
+    
+
+    
 
 
 def main():
