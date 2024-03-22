@@ -1,7 +1,18 @@
-## Pdf to excels converter of Electoral Bond data.
-## Which company bought how much bond and who they give it too.
+# ELECTORAL BOND DATA
 
-## there is Table to find out year wise.<table border="1" class="dataframe">
+### Pdf to excels converter of Electoral Bond data.
+### Which company bought how much bond and who they give it too.
+
+#### if Time Permits we can build graphs and all too with this data
+
+## I also need ED raid data to find out when if Bond was purchased after the ED raid
+
+
+
+
+
+
+<table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th>Year</th>
