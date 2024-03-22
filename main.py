@@ -1,7 +1,7 @@
 import pandas as pd
 import os
-from bound_buyer_file_converter import convert_buyer
-from bound_user_file_converter import convert_user
+from bond_buyer_file_converter import convert_buyer
+from bond_user_file_converter import convert_user
 
 
 def merge_both_excel_sheet(buyer_file, user_file):
@@ -13,7 +13,7 @@ def merge_both_excel_sheet(buyer_file, user_file):
     merged_df = pd.merge(df1, df2, on=['Prefix', 'Bond Number'])
 
     # Write the merged DataFrame to a new Excel file
-    merged_df.to_excel('merged_buyer_and_user.xlsx', index=False)
+    merged_df.to_excel('xlsx/merged_buyer_and_user.xlsx', index=False)
 
 
 def converter(buyer_output, user_output):
@@ -33,7 +33,7 @@ def create_folder_if_not(folder_name):
 
 def build_markdown():
    # Read the merged Excel data into a Pandas DataFrame
-    merged_df = pd.read_excel('merged_buyer_and_user.xlsx')
+    merged_df = pd.read_excel('xlsx/merged_buyer_and_user.xlsx')
 
     # Extract the year from the relevant date column
     merged_df['Year'] = pd.to_datetime(merged_df['Date of Purchase']).dt.year
@@ -65,11 +65,9 @@ def build_markdown():
     
 
     
-
-
 def main():
-    buyer = "bound_buyer.xlsx"
-    user = "bound_user.xlsx"
+    buyer = "xlsx/bond_buyer.xlsx"
+    user = "xlsx/bond_user.xlsx"
     print("Converting file from pdf to excel to do some magic")
     converter(buyer, user)
     print("File conversion complete........")
@@ -83,5 +81,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
+    main()
     build_markdown()

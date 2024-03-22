@@ -12,4 +12,4 @@ jobs:
 
       - name: Combine content files
         run: |
-          cat content/*.md > README.md
+          cat content/*.md > Readme.md
