@@ -1,10 +1,8 @@
 name: Update README
-
 on:
-  push:
-    branches:
-      - main
-
+    push:
+        branches:
+            - main
 jobs:
   update-readme:
     runs-on: ubuntu-latest
