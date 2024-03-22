@@ -4,3 +4,8 @@
 
 - use the data to build a graph company wise who donated mostly
 - Build Graph with political party who recieved most amount.
+
+
+
+# Most Frequent Purchaser
+!include most_frequent_purchaser.md
